@@ -13,8 +13,8 @@
 ## correctionVariables[4][2]:
 Here the calibration variables are saved.
 
-||**Device 1**|**Device 2** | 
-| ---|---|----|
+||**Device 1** / **Device 2** | 
+|----|---|
 |1| A0 correction| 
 |2| A1 correction|
 |3| current_sense_resistor|

@@ -1,7 +1,7 @@
-# Electrolysis Device Controller – Arduino S3
+# Electrolysis Device Controller – Arduino R4 Wifi
 
 ## Version
-**v1.0** – Last updated: 2025-09-04  
+**v1.0** – Last updated: 2025-09-05  
 
 ---
 
@@ -33,7 +33,7 @@ You can set the desired current, the operating time, and monitor voltage, curren
 3. Connect the electrolysis device to the PCB:  
    - **Red wire:** `Ld +`  
    - **Black wire:** `Ld -`  
-   - If connected correctly, the LED should light **yellow** (not red).  
+   - If connected correctly, the LED should light **yellow/green** (not red).  
 
 ---
 
@@ -66,7 +66,7 @@ The OLED screen has **8 lines**:
 | Line | Description |
 |------|------------|
 | Time | Time passed / total wanted time |
-| I want | Desired current (0–250 mA) |
+| I want | Desired current |
 | I real | Actual current through the device |
 | V load | Voltage across the device (mV) |
 | R load | Device resistance (ohms) – inaccurate if device is off |
@@ -107,7 +107,7 @@ Here the PCB can be calibrated.
 ## Bugs / Troubleshooting
 - **OLED screen freezes:** Unplug and plug the Arduino back in.  
 - **Red LED stays on:** Check that `Ld +` and `Ld -` are connected correctly.  
-- **Keeps pausing:** There is a safety measure if there is too much power over the MOSFET. Increasing or decreasing the current both help decreasing the power.
+- **Keeps pausing:** There is a safety measure if there is too much power over the MOSFET. Increasing or decreasing the current both help decreasing the power and the device will be able to start again.
 
 
 ## Values achieved
@@ -124,5 +124,5 @@ Here the PCB can be calibrated.
 - **Improvements PCB:**
    1. Make holes LCD screen bigger.
    2. Correct orientation MOSFET or replace by through-hole MOSFET
-   3. Don't make link between 3V3 and pin A4 (used for I2C).
+   3. To use pin A4, A5 the screen has to be connected to QWIIC.
    
