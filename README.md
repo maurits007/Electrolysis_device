@@ -1,36 +1,128 @@
-## deviceStats[7]
-|Index | |
-|-|-|
-|0 |Last reset time|
-|1 |Total wanted time (s)|
-|2 |Desired current (mA)|
-|3 |Actual current (mA)|
-|4 |Load voltage (mV)|
-|5 |Output enabled flag|
-|6 |Resistance of the load (ohm)|
+# Electrolysis Device Controller – Arduino S3
+
+## Version
+**v1.0** – Last updated: 2025-09-04  
+
+---
+
+## Table of Contents
+1. [Overview](#overview)  
+2. [Startup](#startup)  
+3. [Normal Usage](#normal-usage)  
+4. [Buttons](#buttons)  
+5. [Main menu](#main-menu)  
+6. [Advanced Settings / Calibration](#advanced-settings--calibration)  
+7. [LED Indicators](#led-indicators)  
+8. [Bugs / Troubleshooting](#bugs--troubleshooting) 
+9. [Values achieved](#values-achieved) 
+
+---
+
+## Overview
+This Arduino project allows you to control an electrolysis device via a physical interface (buttons and OLED) or a web interface through WiFi.  
+You can set the desired current, the operating time, and monitor voltage, current, and resistance in real-time.
+
+---
+
+## Startup
+1. The Arduino will create a WiFi hotspot:  
+   - **SSID:** `ArduinoAP`  
+   - **Password:** `12345678`  
+2. Connect to the WiFi (if wanted) and access the web server using a browser:  
+   - Type the IP address shown on the bottom of the OLED screen (usually `192.168.4.1`).  
+3. Connect the electrolysis device to the PCB:  
+   - **Red wire:** `Ld +`  
+   - **Black wire:** `Ld -`  
+   - If connected correctly, the LED should light **yellow** (not red).  
+
+---
+
+## Normal Usage
+1. Start the device and optionally connect via WiFi.  
+2. Connect the electrolysis device as described above.  
+3. Select the desired current (`I want`) and time (`Time`).  
+4. Press the **small button** to start:  
+   - The LED turns **green** if running.  
+   - The OLED shows `I real` (actual current) and elapsed time.  
+5. When the reaction is complete:  
+   - LED turns **blue**.  
+   - The ending screen is displayed.  
+   - Press the small button or use the web interface to restart.  
+
+---
+
+## Buttons
+
+| Button | Function |
+|--------|---------|
+| **Encoder (turnable)** | Select a menu line by turning. Press to start editing the value. Press again to stop editing. |
+| **Small button** | Start/stop electrolysis. LED indicates the device state. |
+
+---
+
+## Main menu
+The OLED screen has **8 lines**:
+
+| Line | Description |
+|------|------------|
+| Time | Time passed / total wanted time |
+| I want | Desired current (0–250 mA) |
+| I real | Actual current through the device |
+| V load | Voltage across the device (mV) |
+| R load | Device resistance (ohms) – inaccurate if device is off |
+| Reset time | Reset the timer to restart the electrolysis reaction |
+| Advanced Settings | Access [calibration options](#advanced-settings--calibration ) and PCB selection |
+| IP | IP address to access the web interface |
+
+> Bottom-right corner: ❚❚ (paused) or ▶ (running)
+
+---
+
+## Advanced Settings / Calibration
+The advanced menu has **5 lines**:
+
+Here the PCB can be calibrated.
+
+| Line | Description |
+|------|------------|
+| PCB number | Select which PCB configuration to use (2 saved configurations supported) |
+| Cur. res. | Current sense resistor value for calibration |
+| A0 | Multiplier for output voltage calibration (`I load`) |
+| A1 | Multiplier for measured current calibration (`I meas`) |
+| Load | Multiplier for measured voltage over the load |
+
+---
+
+## LED Indicators
+
+| Color | Meaning |
+|-------|---------|
+| Red | Device not connected correctly |
+| Yellow | Electrolysis off |
+| Green | Electrolysis running |
+| Blue | Electrolysis finished |
+
+---
+
+## Bugs / Troubleshooting
+- **OLED screen freezes:** Unplug and plug the Arduino back in.  
+- **Red LED stays on:** Check that `Ld +` and `Ld -` are connected correctly.  
+- **Keeps pausing:** There is a safety measure if there is too much power over the MOSFET. Increasing or decreasing the current both help decreasing the power.
 
 
-## correctionVariables[4][2]:
-Here the calibration variables are saved.
+## Values achieved
+- **No external voltage:** 170 mA
+- **6V ext:** 310mA
 
-||**Device 1**|**Device 2** | 
-| ---|---|----|
-|1| A0 correction| 
-|2| A1 correction|
-|3| current_sense_resistor|
-|4| load voltage correction|
 
-## PIN Definition
-| **Pin Nr.** | Meaning|
-|----------|-|
-|A0 | Output Voltage (DAC)|
-|A1 | Current Sense Resistor (ADC)|
-|A2 | Load Voltage Negative (ADC)|
-|A3 | Load Voltage Positive (ADC)|
-|A4 | SDA (I2C)|
-|A5 | SCL (I2C)|
-|2  | Encoder A|
-|3  | Encoder B|
-|6  | Encoder Button|
-|8  | Small Button|
+---
+-------
+## Future extensions
+- **Using external voltage:** First voltage dividers and zener diodes have to be added to the pins reading the voltage over the load to protect it against overvoltage.
+- **using 3V3 as ADC reference:** Currently no significant improvements were found using it.
 
+- **Improvements PCB:**
+   1. Make holes LCD screen bigger.
+   2. Correct orientation MOSFET or replace by through-hole MOSFET
+   3. Don't make link between 3V3 and pin A4 (used for I2C).
+   
