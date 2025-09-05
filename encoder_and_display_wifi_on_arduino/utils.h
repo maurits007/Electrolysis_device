@@ -131,17 +131,17 @@ int renderStatsMenu( //displays the stats menu, returns if it should stay in sta
     return !showEndingScreen;
 
 }
-
-void renderAdvancedMenu(AdvancedItemFn menuFunctionsAdvanced[],
-                        float correctionVariables[][2],
-                        int functionCountAdvanced,
-                        bool* encoderButtonPressed,
-                        int* menuCursor,
-                        bool* isEditing,
-                        int* encoderValue,
-                        int* menuOrderAdvanced,
-                        bool* smallButtonPressed,
-                        bool* reset) 
+// will display the advanced menu, does not return anything
+void renderAdvancedMenu(AdvancedItemFn menuFunctionsAdvanced[], //functions for each menu item
+                        float correctionVariables[][2], //array holding correction variables
+                        int functionCountAdvanced, //number of functions in menuFunctions
+                        bool* encoderButtonPressed, //gets high when encoder button is pressed
+                        int* menuCursor, //current position of the cursor in the menu
+                        bool* isEditing, //it is high if the user is editing a value
+                        int* encoderValue, //value from the encoder, it will change if the user turns the encoder
+                        int* menuOrderAdvanced, //gives the order in which menuFunctions should be displayed on the screen
+                        bool* smallButtonPressed, //gets high when small button is pressed
+                        bool* reset)  //gets send when reseting stats menu from finished screen
 {
     bool encoderButtonHandled = false; // To prevent multiple toggles from a single press
 
