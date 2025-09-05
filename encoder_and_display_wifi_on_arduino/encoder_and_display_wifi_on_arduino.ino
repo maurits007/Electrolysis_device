@@ -47,7 +47,7 @@ void onSmallButtonPress();
 
 //======================Global Variables======================
 int timeFinished = 0; //Time when it finished, to display in ending screen
-
+bool overVoltage = false; //if goes high, it shows overvoltage warning in stats screen
 
 //====================== PIN DEFINITIONS =======================
 #define SDA_PIN A4   // adjust if not on Arduino Uno/Nano
@@ -218,7 +218,7 @@ void loop() {
     float vds = correctionVariables[0][numbPCB]*Vext * vdsRaw / 4096.0;
     float powerDissipated = vds * deviceStats[3]; //in mW
     if(powerDissipated > 400){ //if too much power dissipated, turn off output
-      deviceStats[5] = 0;
+      overVoltage = true;
     }
     // Calculate output voltage command
     outputVoltageCommand = correctionVariables[0][numbPCB]*deviceStats[2] * correctionVariables[2][numbPCB] * 4096 / (Vdd*1000);

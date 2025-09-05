@@ -111,7 +111,7 @@ Here the PCB can be calibrated.
 
 
 ## Values achieved
-- **No external voltage:** 170 mA
+- **No external voltage:** 210 mA
 - **6V ext:** 310mA
 
 

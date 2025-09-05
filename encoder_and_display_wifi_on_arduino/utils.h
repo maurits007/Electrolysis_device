@@ -12,6 +12,7 @@ int pauseTimestamp = 0; //holds the time when paused
 extern int timeFinished; //holds the time when it finished
 extern int elapsedTime; //holds the elapsed time when paused
 extern bool showAdvancedMenu; //if goes high, it shows the advanced menu
+extern bool overVoltage; //if goes high, it should pause
 bool showEndingScreen = false; //if goes high, it shows the ending screen
 
 typedef const char* (*AdvancedItemFn)(float correctionVariables[][2], //function pointer type for advanced menu items
@@ -52,7 +53,12 @@ int renderStatsMenu( //displays the stats menu, returns if it should stay in sta
         *toggleStartWifi = false; // Reset toggle wifi state
     }
 
-
+    if (overVoltage){
+        deviceStats[5] = 0; // Toggle run/pause state
+        *isEditing = false; // Exit editing mode if toggling pause/resume
+        elapsedTime = millis() - deviceStats[0];
+        overVoltage = false;   
+    }
     // Handle small button toggle (pause/resume)
     if (*smallButtonPressed or *toggleStartWifi) {
         *toggleStartWifi = false; // Reset the flag after processing
